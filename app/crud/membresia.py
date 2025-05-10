@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
-from app import models, schemas
+from app.models import Membresia
 
-def create_membresia(db: Session, membresia: schemas.MembresiaCreate):
-    db_membresia = models.Membresia(**membresia.dict())
-    db.add(db_membresia)
+def get_membresias(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(Membresia).offset(skip).limit(limit).all()
+
+def create_membresia(db: Session, membresia: Membresia):
+    db.add(membresia)
     db.commit()
-    db.refresh(db_membresia)
-    return db_membresia
+    db.refresh(membresia)
+    return membresia

@@ -1,12 +1,11 @@
 from sqlalchemy.orm import Session
-from app import models, schemas
+from app.models import Pasajero
 
 def get_pasajeros(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Pasajero).offset(skip).limit(limit).all()
+    return db.query(Pasajero).offset(skip).limit(limit).all()
 
-def create_pasajero(db: Session, pasajero: schemas.PasajeroCreate):
-    db_pasajero = models.Pasajero(**pasajero.dict())
-    db.add(db_pasajero)
+def create_pasajero(db: Session, pasajero: Pasajero):
+    db.add(pasajero)
     db.commit()
-    db.refresh(db_pasajero)
-    return db_pasajero
+    db.refresh(pasajero)
+    return pasajero

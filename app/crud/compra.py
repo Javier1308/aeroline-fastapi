@@ -1,10 +1,11 @@
 from sqlalchemy.orm import Session
-from app import models
-from app.schemas import compra as schemas
+from app.models import Compra
 
-def create_compra(db: Session, compra: schemas.CompraCreate):
-    db_compra = models.Compra(**compra.dict())
-    db.add(db_compra)
+def get_compras(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(Compra).offset(skip).limit(limit).all()
+
+def create_compra(db: Session, compra: Compra):
+    db.add(compra)
     db.commit()
-    db.refresh(db_compra)
-    return db_compra
+    db.refresh(compra)
+    return compra

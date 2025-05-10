@@ -1,10 +1,5 @@
-from pydantic import BaseModel, ForwardRef
+from pydantic import BaseModel
 from datetime import date
-from typing import List
-
-# Define ForwardRef for circular relationships
-Membresia = ForwardRef('Membresia')
-Compra = ForwardRef('Compra')
 
 class PasajeroBase(BaseModel):
     nombre_completo: str
@@ -13,12 +8,11 @@ class PasajeroBase(BaseModel):
     email: str
     telefono: str
 
-    # Relationships
-    membresias: List[Membresia] = []  # Relación con Membresía
-    compras: List[Compra] = []  # Relación con Compra
+class PasajeroCreate(PasajeroBase):
+    pass
+
+class Pasajero(PasajeroBase):
+    id_pasajero: int
 
     class Config:
         orm_mode = True
-
-# Actualizar las referencias después de definir todas las clases
-PasajeroBase.update_forward_refs()

@@ -1,10 +1,14 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app import crud, schemas, database
+from app import crud, schemas
+from app.database import get_db
 
 router = APIRouter()
 
-# Crear una nueva membresía
+@router.get("/membresias/", response_model=List[schemas.Membresia])
+def read_membresias(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_membresias(db, skip=skip, limit=limit)
+
 @router.post("/membresias/", response_model=schemas.Membresia)
-def create_membresia(membresia: schemas.MembresiaCreate, db: Session = Depends(database.get_db)):
+def create_membresia(membresia: schemas.MembresiaCreate, db: Session = Depends(get_db)):
     return crud.create_membresia(db=db, membresia=membresia)
