@@ -13,3 +13,4 @@ def read_pasajeros(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
 @router.post("/pasajeros/", response_model=schemas.Pasajero)
 def create_pasajero(pasajero: schemas.PasajeroCreate, db: Session = Depends(get_db)):
     return crud.create_pasajero(db=db, pasajero=pasajero)
+
